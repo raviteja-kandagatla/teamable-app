@@ -4,8 +4,12 @@ function handleEditProfile() {
     inputName.value = name
 
     var email = document.getElementById("email").textContent
-    var inputEmail = document.getElementById("input-email")
-    inputEmail.value = email
+    var updatedEmail = document.getElementById("input-email")
+    if (validator.isEmail(updatedEmail.value)) {
+        email.textContent = updatedEmail
+    } else {
+        alert("wrong email format")
+    }
 
     var Interests = document.getElementById("Interests").textContent
     var inputInterests = document.getElementById("input-interest")
