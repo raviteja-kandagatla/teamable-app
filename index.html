@@ -6,6 +6,8 @@
         <meta charset="utf-8" />
         <script src="node_modules/validator/validator.min.js"></script>
         <script src="app.js"></script>
+        <link rel="stylesheet" href="node_modules/Datepicker.js/dist/css/datepicker.material.css">
+        <script src="node_modules/Datepicker.js/dist/datepicker.js"></script>
     </head>
     <body>
     <div id="display-view">
@@ -13,8 +15,9 @@
         <img src="profile.jpg">
         
         <p><b>Name:</b> <span id="name">Anna Smith</span></p>
-        <p><b>Name:</b> <span id="email">robustzig@example.com</span></p>
-        <p><b>Name:</b> <span id="Interests">Coding</span></p>
+        <p><b>Email:</b> <span id="email">robustzig@example.com</span></p>
+        <p><b>Interests:</b> <span id="Interests">Coding</span></p>
+        <p><b>Birthday date:</b> <span id="birthday"></span></p>
         <button onclick="handleEditProfile()">Edit Profile</button>
     </div>
 
@@ -35,6 +38,10 @@
 
         <span>Interests: </span>
         <input type="text" id="input-interest" placeholder="coding"/>
+        <hr />
+        
+        <span>Birthday date: </span>
+        <input type="date" id="birthday" />
         <hr />
 
         <button onclick="handleDisplayProfile()">Display Profile</button>

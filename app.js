@@ -1,4 +1,5 @@
 function handleEditProfile() {
+    new Datepicker('#birthday');
     var name = document.getElementById("name").textContent
     var inputName = document.getElementById("input-name")
     inputName.value = name
