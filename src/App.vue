@@ -3,9 +3,9 @@
         <h1>User profile</h1>
         <img :src="image">
         
-        <p><b>Name:</b> <span id="name">Anna Smith</span></p>
-        <p><b>Email:</b> <span id="email">robustzig@example.com</span></p>
-        <p><b>Interests:</b> <span id="Interests">Coding</span></p>
+        <p><b>Name:</b> <span id="name">{{ name }}</span></p> <hr />
+        <p><b>Email:</b> <span id="email">{{ email }}</span></p> <hr />
+        <p><b>Interests:</b> <span id="Interests">{{ interests }}</span></p> <hr />
         <p><b>Birthday date:</b> <span id="birthday"></span></p> 
 
         <button @click="handleEditProfile">Edit Profile</button>
@@ -16,11 +16,11 @@
         <img :src="image">
         
         <span>Name: </span>
-        <input type="text" id="input-name" placeholder="Anna Smith"/>
+        <input type="text" id="input-name" v-model="name"/>
         <hr />
 
         <span>Email: </span>
-        <input type="text" id="input-email" placeholder="robustzig@example.com"/>
+        <input type="text" id="input-email" :placeholder="email"/>
         <hr />
 
         <span>Interests: </span>
@@ -41,7 +41,10 @@ export default {
     name: "App",
     data() {
         return {
-            image: image
+            image: image,
+            name: "Anna Smith",
+            email: "robustzig@example.com",
+            interests: "coding"
         }
     },
     methods: {
