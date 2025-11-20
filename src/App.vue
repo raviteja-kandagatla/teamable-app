@@ -1,5 +1,5 @@
 <template>
-    <div id="display-view">
+    <div v-show="!isEditMode" id="display-view">
         <h1>User profile</h1>
         <img :src="image">
         
@@ -44,11 +44,13 @@ export default {
             image: image,
             name: "Anna Smith",
             email: "robustzig@example.com",
-            interests: "coding"
+            interests: "coding",
+            isEditMode: false
         }
     },
     methods: {
         handleEditProfile() {
+            this.isEditMode = true
             var name = document.getElementById("name").textContent
             var inputName = document.getElementById("input-name")
             inputName.value = name
@@ -64,6 +66,7 @@ export default {
             document.getElementById("display-view").style.display = "none"
         },
         handleDisplayProfile() {
+            this.isEditMode = false
             var updatedName = document.getElementById("input-name").value
             var name = document.getElementById("name")
             name.textContent = updatedName
