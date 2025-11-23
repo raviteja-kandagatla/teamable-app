@@ -48,6 +48,12 @@ export default {
             isEditMode: false
         }
     },
+    async created() {
+        const userData = await this.fetchUserProfile()
+        this.name = userData.name 
+        this.email = userData.email
+        this.interests = userData.interests
+    },
     methods: {
         handleEditProfile() {
             this.isEditMode = true
@@ -81,6 +87,10 @@ export default {
 
             document.getElementById("display-view").style.display = "block"
             document.getElementById("edit-view").style.display = "none"
+        },
+        async fetchUserProfile() {
+            const res = await fetch('http://localhost:3000/get-profile');
+            return await res.json();
         }
     }
 }
