@@ -2,6 +2,7 @@
 const express = require('express')
 const cors = require('cors');
 const { MongoClient } = require('mongodb')
+const { isInvalidEmail, isEmptyPayload } = require('./validator')
 
 const app = express() 
 
@@ -41,9 +42,9 @@ app.post('/update-profile', async function(req, res) {
     const payload = req.body
     console.log(payload)
 
-     if (Object.keys(payload).length === 0) { 
-        return res.send({ error: "empty payload. couldn't update user profile data" }) 
-     }
+    if ( isEmptyPayload(payload) || isInvalidEmail(payload)) { 
+        res.send({ error: "empty payload. couldn't update user profile data" })
+    } else {
 
     // initiates database
     // connect to mongodb database
@@ -55,14 +56,14 @@ app.post('/update-profile', async function(req, res) {
     const collection = db.collection(collName)
 
      // insert payload using official syntax
+    payload['id'] = 1
+    const updatedValues = { $set: payload }
 
-    await collection.insertOne({ _id: 1 });
-    await collection.insertOne({ _id: 2 });
-    await collection.insertOne(payload)
+    await collection.updateOne({id:1}, updatedValues, {upsert: true})
+    client.close()
     res.send({ info: "User Profile saved Updated successfully" })
+    }
 })
-  //      payload['id'] = 1
-  //      await collection.insertOne(payload)
 app.listen(3000, () => {
     console.log("app listening on port 3000")
 })

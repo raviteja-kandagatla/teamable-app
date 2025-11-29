@@ -8,12 +8,13 @@
     "cors": "^2.8.5",
     "express": "^4.21.2",
     "mongodb": "7.0.0",
-    "mongoose": "^9.0.0",
-    "vue": "3.5.22"
+    "vue": "3.5.22",
+    "jest":"30.2.0"
   },
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service serve",
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "jest"
   }
 }  
