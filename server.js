@@ -1,86 +1,68 @@
 // server.js
 const express = require('express')
-const cors = require('cors')
+const cors = require('cors');
 const { MongoClient } = require('mongodb')
-const path = require('path')
 
-const app = express()
+const app = express() 
+
 app.use(cors())
-app.use(express.json())
+app.use(express.json());
 
-// MongoDB connection
-const url = 'mongodb://localhost:27017'
-const client = new MongoClient(url)
+
+// MONGODB CONNECTION (OFFICIAL WAY)
+const url = 'mongodb://localhost:27017/';
+const client = new MongoClient(url);
+
 const dbName = 'company_db'
 const collName = 'employees'
 
-let db, collection
+// SERVE STATIC FILES
+app.use('/', express.static( __dirname + '/'))
 
-// Connect to MongoDB once at server start
-async function startServer() {
-    try {
-        await client.connect()
-        console.log("✅ Connected successfully to MongoDB")
-
-        db = client.db(dbName)
-        collection = db.collection(collName)
-
-        // Start Express server AFTER DB connection
-        app.listen(3000, () => {
-            console.log("🌐 Backend + Frontend running on http://localhost:3000")
-        })
-    } catch (err) {
-        console.error("❌ Failed to connect to MongoDB:", err)
-        process.exit(1)
+// GET PROFILE (STATIC RESPONSE)
+app.get('/get-profile', async function(req, res) {
+    // get data from database
+    const response = {
+        name: "Anna Smith",
+        email: "robustzig@example.com",
+        interests: "coding"
     }
-}
-startServer()
 
-// Serve Vue frontend (dist folder)
-//app.use(express.static(path.join(__dirname, 'dist')))
+    // connects to mongodb db
+    // get data from database
+    await client.connect()
+    console.log('Connected successfully to server');
 
-// API routes
-app.get('/get-profile', async (req, res) => {
-    try {
-        // You can also fetch from MongoDB here if needed
-        const response = {
-            name: "Anna Smith",
-            email: "robustzig@example.com",
-            interests: "coding"
-        }
-        res.send(response)
-    } catch (err) {
-        console.error(err)
-        res.status(500).send({ error: "Failed to get profile" })
-    }
+    res.send(response)
 })
 
-app.post('/update-profile', async (req, res) => {
+// INSERT DATA INTO MONGODB (FROM FRONTEND)
+app.post('/update-profile', async function(req, res) {
     const payload = req.body
+    console.log(payload)
 
-    if (Object.keys(payload).length === 0) {
-        return res.send({ error: "Empty payload. Couldn't update user profile" })
-    }
+     if (Object.keys(payload).length === 0) { 
+        return res.send({ error: "empty payload. couldn't update user profile data" }) 
+     }
 
-    try {
-        // Insert payload document
-        const result = await collection.insertOne(payload)
+    // initiates database
+    // connect to mongodb database
+    // save payload data to the database
+    await client.connect()
+    console.log('Connected successfully to server');
+    
+    const db = client.db(dbName)
+    const collection = db.collection(collName)
 
-        // Extra IDs (old code preserved)
-        try { await collection.insertOne({ _id: 1 }) } catch(e){console.log("Skipping duplicate _id 1")}
-        try { await collection.insertOne({ _id: 2 }) } catch(e){console.log("Skipping duplicate _id 2")}
+     // insert payload using official syntax
 
-        res.send({
-            message: "User profile data updated successfully",
-            insertedId: result.insertedId
-        })
-    } catch (err) {
-        console.error("Error inserting document:", err)
-        res.status(500).send({ error: "Failed to insert document" })
-    }
+    await collection.insertOne({ _id: 1 });
+    await collection.insertOne({ _id: 2 });
+    await collection.insertOne(payload)
+    res.send({ info: "User Profile saved Updated successfully" })
 })
-
-// Catch-all for frontend routing
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'))
+  //      payload['id'] = 1
+  //      await collection.insertOne(payload)
+app.listen(3000, () => {
+    console.log("app listening on port 3000")
 })

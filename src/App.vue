@@ -89,31 +89,6 @@ export default {
             document.getElementById("edit-view").style.display = "none"
         },
         async fetchUserProfile() {
-    try {
-        const res = await fetch('/get-profile')
-        if (!res.ok) throw new Error('Network response not ok')
-        const data = await res.json()
-        this.userProfile = data
-    } catch (err) {
-        console.error("Failed to fetch profile:", err)
-    }
-},
-
-// POST profile update
-        async updateUserProfile(payload) {
-    try {
-        const res = await fetch('/update-profile', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        })
-        const data = await res.json()
-        console.log("Server response:", data)
-    } catch (err) {
-        console.error("Failed to update profile:", err)
-    }
-},
-        async fetchUserProfile() {
             const res = await fetch('http://localhost:3000/get-profile');
             return await res.json();
         }
